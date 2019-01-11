@@ -6,6 +6,12 @@ This contains the Arma 3 server run scripts that I made for Section 7
 
 # run.ps1
  This is the main script that starts up the servers. It includes all the parameters to start up a server including adding the config scripts to the server start up. More documentation is included inside.
+ 
+# runHC.bat
+ All this does is run the runHC.ps1
+
+# runHC.ps1
+ This is the main script that starts up the headless clients. It includes all the parameters to start up a headless client including adding the config scripts to the headless client start up. More documentation is included inside.
 
 # \Profiles\
   This folder includes all the server profiles directories. Profile 
@@ -18,3 +24,9 @@ This contains the Arma 3 server run scripts that I made for Section 7
 
 # \Profiles\Default\Users\
  This directory contains the different server side profiles. These profiles control the in game settting like if people can crosshairs.
+ 
+# \Profiles\Default\
+  This is just an example of a headless client profile directory. Inside it contains the User directory.
+
+# \Profiles\Default\Users\
+ This directory contains the different headless client profiles. Ussually nothing has to be edited here.
