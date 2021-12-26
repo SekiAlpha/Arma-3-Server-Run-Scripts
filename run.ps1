@@ -3,15 +3,6 @@ $CMD= ''
 
 #Directory of server profile data
 $profileDir=''
-#Details on this folder can be found here:
-#https://community.bistudio.com/wiki/server.cfg
-$profiles='"-config=' + $profileDir + 'server.cfg"'
-#Details on this folder can be found here:
-#https://community.bistudio.com/wiki/basic.cfg
-$profiles+='"-cfg=' + $profileDir + 'basic.cfg"'
-#Setting the directory of server profile data.
-#This is the directory that contains all the server logs
-$profiles+='"-profiles=' + $profileDir + '"'
 
 #Parameters for the server
 #All parameters can be found here
@@ -32,6 +23,18 @@ $mods+= '"'
 $mods+= ' "-serverMod='
 $mods+= $modDir + '' + ';'
 $mods+= '"'
+
+#Details on this folder can be found here:
+#https://community.bistudio.com/wiki/server.cfg
+$profiles='"-config=' + $profileDir + '/config/server.cfg"'
+
+#Details on this folder can be found here:
+#https://community.bistudio.com/wiki/basic.cfg
+$profiles+='"-cfg=' + $profileDir + '/config/basic.cfg"'
+
+#Setting the directory of server profile data.
+#This is the directory that contains all the server logs
+$profiles+='"-profiles=' + $profileDir + '"'
 
 $args=$profiles + $args
 $args+=$mods
