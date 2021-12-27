@@ -56,7 +56,7 @@ if (($serverModArray.length -gt 0) -and ($serverModArray[0].length -gt 0)){
     $args+=$serMods
 }
 
-#$server = Start-Process -FilePath $CMD -ArgumentList $args -passthru
+$server = Start-Process -FilePath $CMD -ArgumentList $args -passthru
 
 #Set Processor Affinity
 #$server.ProcessorAffinity=3840
