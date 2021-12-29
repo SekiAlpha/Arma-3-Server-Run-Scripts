@@ -3,15 +3,6 @@ $CMD= ''
 
 #Directory of server profile data
 $profileDir=''
-#Details on this folder can be found here:
-#https://community.bistudio.com/wiki/server.cfg
-$profiles='"-config=' + $profileDir + 'server.cfg"'
-#Details on this folder can be found here:
-#https://community.bistudio.com/wiki/basic.cfg
-$profiles+='"-cfg=' + $profileDir + 'basic.cfg"'
-#Setting the directory of server profile data.
-#This is the directory that contains all the server logs
-$profiles+='"-profiles=' + $profileDir + '"'
 
 #Parameters for the server
 #All parameters can be found here
@@ -22,68 +13,71 @@ $args=''
 $modDir=''
 
 #Add mods from Worksop folder to the server startup
-$mods=' "-mod=argo;curator;heli;jets;kart;mark;orange;'
-$mods+= $modDir + '' + ';'
-$mods+= '"'
+$modsArray = @(
+	''
+)
 
 #Add mods from Worksop folder to the server startup
 #$modDir='C:\Program Files (x86)\Steam\steamapps\common\Arma 3\!Workshop\'
 
-$mods+= ' "-serverMod='
-$mods+= $modDir + '' + ';'
-$mods+= '"'
+$serverModArray = @(
+    ''
+)
 
-$args=$profiles + $args
-$args+=$mods
+#You don't have to edit beyond this point
+
+#Details on this folder can be found here:
+#https://community.bistudio.com/wiki/server.cfg
+$serverCfg='"-config=' + $profileDir + '\config\server.cfg"'
+
+#Details on this folder can be found here:
+#https://community.bistudio.com/wiki/basic.cfg
+$basicCfg+='"-cfg=' + $profileDir + '\config\basic.cfg"'
+
+#Setting the directory of server profile data.
+#This is the directory that contains all the server logs
+$profiles+='"-profiles=' + $profileDir + '"'
+
+$args=$profiles + $serverCfg + $basicCfg
+
+#Detection if all required directories exist
+
+if (($CMD -eq '') -or ($profileDir -eq  '') -or ($modDir -eq '')){
+    Read-Host "Looks like some variables have been left empty. Press enter to close the program"
+    Exit
+}
+
+if (-not (Test-Path $CMD -PathType leaf)){
+    Read-Host "Looks like the location of the arma 3 exe was not found. Press enter to close the program"
+    Exit
+}
+if (-not (Test-Path $profileDir -PathType container)){
+    Read-Host "Looks like the profileDir value you entered isn't a folder. Press enter to close the program"
+    Exit
+}
+if (-not (Test-Path $modDir -PathType container)){
+    Read-Host "Looks like the modDir value you entered isn't a folder. Press enter to close the program"
+    Exit
+}
+
+
+if (($modsArray.length -gt 0) -and ($modsArray[0].length -gt 0)){
+    $mods=' -mod=curator;kart;heli;mark;expansion;jets;argo;orange;tacops;tank;enoch;aow;'
+    for($i = 0; $i -lt $modsArray.length; $i++){
+	    $mods += $modDir + '\' + $modsArray[$i] + ';'
+    }
+    $args+=$mods
+}
+
+if (($serverModArray.length -gt 0) -and ($serverModArray[0].length -gt 0)){
+    $serMods+= ' -serverMod='
+    for($i = 0; $i -lt $serverModArray.length; $i++){
+	    $serMod+= $modDir + '\' + $serverModArray[$i] + ';'
+    }
+    $args+=$serMods
+}
 
 $server = Start-Process -FilePath $CMD -ArgumentList $args -passthru
 
-#Restart Sript
-
-$H = Get-Host
-$Win = $H.UI.RawUI.WindowSize
-$Win.Height = 10
-$Win.Width  = 65
-$H.UI.RawUI.Set_WindowSize($Win)
-#Title of the Powershell/CMD Prompt window
-$H.ui.RawUI.WindowTitle = ''
-
 #Set Processor Affinity
 #$server.ProcessorAffinity=3840
-
-#When to Restart in HHmmss
-$restartTime = 070000
-$restartCounter = 0
-#If the console window is closed also close the server
-Register-EngineEvent PowerShell.Exiting {Stop-Process -id $server.Id}
-
-#Console loop and server restart loop
-while ($true) {
-    #Get time and convert into Int
-    $time = [convert]::ToInt32((Get-Date -Format HHmmss), 10)
-    #If between restartTime and restartTime + 10 shut down the server and start after 3 seconds
-    if (($time -ge $restartTime) -and ($time -le ($restartTime + 2))) {
-        Stop-Process -id $server.Id
-        $restartCounter++
-        Start-Sleep -Seconds 3
-        $server = Start-Process -FilePath $CMD -ArgumentList $args -passthru
-		$server.ProcessorAffinity=3840
-    }
-    #If process is not found shut down the script udpate the window
-    if (Get-Process -Id $server.Id){
-		Clear-Host
-		#Put the name of the server below
-		""
-        Get-Process -Id $server.Id
-        "Amount of times restarted:"+$restartCounter
-    } else {
-		Clear-Host
-		""
-		""
-		"Server Not Found"
-        "Shutting Down."
-		Start-Sleep -Seconds 3
-        Break
-    }
-    Start-Sleep -Seconds 1
-}
