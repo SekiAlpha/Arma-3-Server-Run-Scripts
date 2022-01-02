@@ -21,7 +21,7 @@ $modsArray = @(
 
 #Setting the directory of server profile data.
 #This is the directory that contains all the server logs
-$profiles+='"-profiles=' + $profileDir + '\"'
+$profiles+='"-profiles=' + $profileDir + '"'
 
 #Detection if all required directories exist
 
