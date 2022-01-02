@@ -59,6 +59,10 @@ if (-not (Test-Path $modDir -PathType container)){
     Read-Host "Looks like the modDir value you entered isn't a folder. Press enter to close the program"
     Exit
 }
+if (-not (Test-Path ($profileDir + '\config') -PathType container)){
+    Read-Host "Looks like the profile directory value you entered doesn't have a config folder. Press enter to close the program"
+    Exit
+}
 
 
 if (($modsArray.length -gt 0) -and ($modsArray[0].length -gt 0)){
