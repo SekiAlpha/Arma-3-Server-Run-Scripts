@@ -36,7 +36,7 @@ $basicCfg='"-cfg=' + $profileDir + '\config\basic.cfg"'
 
 #Setting the directory of server profile data.
 #This is the directory that contains all the server logs
-$profiles='"-profiles=' + $profileDir + '"'
+$profiles='"-profiles=' + $profileDir + '\"'
 
 $args=$profiles + ' ' + $serverCfg+ ' ' + $basicCfg
 

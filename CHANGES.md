@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.2.1
+- Fix a weird bug that caused steam to break
+
 ## 1.2.0
 - Many bug fixes that caused previous version not to work
 - Implementation of paramters file
