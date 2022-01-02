@@ -32,13 +32,13 @@ $serverCfg='"-config=' + $profileDir + '\config\server.cfg"'
 
 #Details on this folder can be found here:
 #https://community.bistudio.com/wiki/basic.cfg
-$basicCfg+='"-cfg=' + $profileDir + '\config\basic.cfg"'
+$basicCfg='"-cfg=' + $profileDir + '\config\basic.cfg"'
 
 #Setting the directory of server profile data.
 #This is the directory that contains all the server logs
-$profiles+='"-profiles=' + $profileDir + '"'
+$profiles='"-profiles=' + $profileDir + '"'
 
-$args=$profiles + $serverCfg + $basicCfg
+$args=$profiles + ' ' + $serverCfg+ ' ' + $basicCfg
 
 #Detection if all required directories exist
 
@@ -70,9 +70,9 @@ if (($modsArray.length -gt 0) -and ($modsArray[0].length -gt 0)){
 }
 
 if (($serverModArray.length -gt 0) -and ($serverModArray[0].length -gt 0)){
-    $serMods+= ' -serverMod='
+    $serMods= ' -serverMod='
     for($i = 0; $i -lt $serverModArray.length; $i++){
-	    $serMod+= $modDir + '\' + $serverModArray[$i] + ';'
+	    $serMods+= $modDir + '\' + $serverModArray[$i] + ';'
     }
     $args+=$serMods
 }
