@@ -23,6 +23,30 @@ $modsArray = @(
 #This is the directory that contains all the server logs
 $profiles+='"-profiles=' + $profileDir + '"'
 
+#Detection if all required directories exist
+
+if (($CMD -eq '') -or ($profileDir -eq  '') -or ($modDir -eq '')){
+    Read-Host "Looks like some variables have been left empty. Press enter to close the program"
+    Exit
+}
+
+if (-not (Test-Path $CMD -PathType leaf)){
+    Read-Host "Looks like the location of the arma 3 exe was not found. Press enter to close the program"
+    Exit
+}
+if (-not (Test-Path $profileDir -PathType container)){
+    Read-Host "Looks like the profileDir value you entered isn't a folder. Press enter to close the program"
+    Exit
+}
+if (-not (Test-Path $modDir -PathType container)){
+    Read-Host "Looks like the modDir value you entered isn't a folder. Press enter to close the program"
+    Exit
+}
+if (-not (Test-Path ($profileDir + '\config') -PathType container)){
+    Read-Host "Looks like the profile directory value you entered doesn't have a config folder. Press enter to close the program"
+    Exit
+}
+
 $args=$profiles + $args
 
 if (($modsArray.length -gt 0) -and ($modsArray[0].length -gt 0)){
