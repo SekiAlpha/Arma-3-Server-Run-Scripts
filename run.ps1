@@ -64,22 +64,33 @@ if (-not (Test-Path ($profileDir + '\config') -PathType container)){
     Exit
 }
 
+#Sets the location of the parameter file
+$paramFile=$profileDir+'\config\parameters.par'
+#Combines and formats all the mods to be parsed into the parameter file
+$paramFileArgs= 'class Arg {'
 
 if (($modsArray.length -gt 0) -and ($modsArray[0].length -gt 0)){
-    $mods=' -mod=curator;kart;heli;mark;expansion;jets;argo;orange;tacops;tank;enoch;aow;'
+    $mods='-mod=curator;kart;heli;mark;expansion;jets;argo;orange;tacops;tank;enoch;aow;'
     for($i = 0; $i -lt $modsArray.length; $i++){
 	    $mods += $modDir + '\' + $modsArray[$i] + ';'
     }
-    $args+=$mods
+    $paramFileArgs+= 'mods="' + $mods + '";'
 }
 
 if (($serverModArray.length -gt 0) -and ($serverModArray[0].length -gt 0)){
-    $serMods= ' -serverMod='
+    $serMods= '-serverMod='
     for($i = 0; $i -lt $serverModArray.length; $i++){
 	    $serMods+= $modDir + '\' + $serverModArray[$i] + ';'
     }
-    $args+=$serMods
+    $paramFileArgs+= 'serverMods="' + $serMods + '";'
 }
+
+$paramFileArgs+= '};'
+
+#parses mods into parameter file
+Set-Content -Path $paramFile -Value $paramFileArgs
+
+$args += ' -par=' + $paramFile
 
 $server = Start-Process -FilePath $CMD -ArgumentList $args -passthru
 
